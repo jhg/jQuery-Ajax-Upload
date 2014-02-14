@@ -12,26 +12,17 @@
 */
  
  // Function.prototype.bind polyfill
-if ( !Function.prototype.bind ) {
-
-  Function.prototype.bind = function( obj ) {
-    if(typeof this !== 'function') // closest thing possible to the ECMAScript 5 internal IsCallable function
-      throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
-
-    var slice = [].slice,
-        args = slice.call(arguments, 1), 
-        self = this, 
-        nop = function () {}, 
-        bound = function () {
-          return self.apply( this instanceof nop ? this : ( obj || {} ), 
-                              args.concat( slice.call(arguments) ) );    
-        };
-
-    bound.prototype = this.prototype;
-
-    return bound;
-  };
-}
+Function.prototype.bind || Function.prototype.bind = function( obj ) {
+  if(typeof this !== 'function') // closest thing possible to the ECMAScript 5 internal IsCallable function
+    throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
+  var slice = [].slice.call, args = slice(arguments, 1), self = this;
+  function bound() {
+    return self.apply( this instanceof function(){} ? this : ( obj || {} ),
+             args.concat( slice(arguments) ) );
+  }
+  bound.prototype = this.prototype;
+  return bound;
+};
  
 (function ($) {
 	
