@@ -367,10 +367,10 @@ if ( !Function.prototype.bind ) {
 		return this;
 	}
 	
-	
 	$.fn.ajaxUploadUnbind = function() {
 		this.each(function() {
 			$(this).removeData('processed');
 			$(this).off();
 		});
 	}
+})(jQuery);
